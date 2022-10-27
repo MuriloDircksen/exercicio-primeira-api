@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import javax.persistence.*;
@@ -16,7 +18,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "usuario")
-public class UsuarioModel /*implements UserDetails*/ {
+public class UsuarioModel implements UserDetails {
 
 
    // @SequenceGenerator(name = "seq_usuario", sequenceName = "seq_usuario")
@@ -40,6 +42,15 @@ public class UsuarioModel /*implements UserDetails*/ {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TelefoneModel> telefones = new ArrayList<TelefoneModel>();
+
+    @OneToMany
+    @JoinTable(name = "usuarios_role", uniqueConstraints = @UniqueConstraint(
+            columnNames = {"usuario_id","role_id"},name = "unique_role_usuario"), joinColumns = @JoinColumn(
+                    name = "usuario_id", referencedColumnName = "id", table = "usuario", foreignKey = @ForeignKey(
+                            name = "usuario_fk", value = ConstraintMode.CONSTRAINT)),
+                        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "role"
+                                , updatable = false, foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
+    private List<Role> roles; ///papeis com o acesso do usuario
 
     public List<TelefoneModel> getTelefones() {
         return telefones;
@@ -105,14 +116,14 @@ public class UsuarioModel /*implements UserDetails*/ {
         return id.equals(that.id) && Objects.equals(nome, that.nome) && Objects.equals(senha, that.senha) && Objects.equals(login, that.login);
     }
 
-   /* @Override
+    @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.roles;
     }
 
     @Override
@@ -143,5 +154,5 @@ public class UsuarioModel /*implements UserDetails*/ {
     @Override
     public boolean isEnabled() {
         return true;
-    }*/
+    }
 }

@@ -11,4 +11,7 @@ public interface UsuarioRepository extends CrudRepository<UsuarioModel, Long> {
 
     @Query(value = "select u from UsuarioModel u where u.nome like %?1%")
     ArrayList<UsuarioModel> getUserByName(String nome);
+
+    @Query(value = "select u from UsuarioModel u where u.login = ?1")
+    UsuarioModel findUserByLogin (String Login);
 }

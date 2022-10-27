@@ -1,4 +1,4 @@
-/*package br.com.futurodev.api.primeiraapi.model;
+package br.com.futurodev.api.primeiraapi.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -11,7 +11,7 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nomeRole;*//*papel a ser dado, tipo ROLE_ADMIN, ROLE_GERENTE, ROLE_CAIXA*//*
+    private String nomeRole; //*papel a ser dado, tipo ROLE_ADMIN, ROLE_GERENTE, ROLE_CAIXA*//*
 
     @Override
     public String getAuthority() {
@@ -34,4 +34,4 @@ public class Role implements GrantedAuthority {
     public void setNomeRole(String nomeRole) {
         this.nomeRole = nomeRole;
     }
-}*/
+}

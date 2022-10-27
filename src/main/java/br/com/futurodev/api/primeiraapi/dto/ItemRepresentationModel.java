@@ -51,5 +51,5 @@ public class ItemRepresentationModel {
         this.produtoModel = produtoModel;
     }
 
-   
+
 }
