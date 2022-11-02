@@ -15,7 +15,8 @@ INSERT INTO public.telefone(numero, tipo, id_usuario)	VALUES ('1111111111', 'cel
 INSERT INTO public.telefone(numero, tipo, id_usuario)	VALUES ('2222222222', 'cel', 2);
 
 INSERT INTO public.role(nome_role) VALUES ('ROLE_ADMIN');
-INSERT INTO public.role(nome_role) VALUES ('ROLE_CAIXA');
+INSERT INTO public.role(nome_role) VALUES ('ROLE_CADASTRADOR');
+INSERT INTO public.role(nome_role) VALUES ('ROLE_PEDIDO');
 INSERT INTO public.usuarios_role(usuario_id, role_id) VALUES (1, 1);
 INSERT INTO public.usuarios_role(usuario_id, role_id) VALUES (2, 2);
 
