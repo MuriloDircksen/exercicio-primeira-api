@@ -29,7 +29,7 @@ public class UsuarioModel implements UserDetails {
     private String senha;
     @Column(unique = true)
     private String login;
-    @CreationTimestamp //indica que sempre será criado um timestamp quando criar um objeto
+   /* @CreationTimestamp //indica que sempre será criado um timestamp quando criar um objeto
     //@Column(columnDefinition = "timestamp with time zone Default timezone(utc::text,CURRENT_TIMESTAMP(0))", updatable = false)
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime dataCadastro;
@@ -37,19 +37,21 @@ public class UsuarioModel implements UserDetails {
     @UpdateTimestamp //faz com que sempre que atualize o objeto, seja atualizado o timestamp com o timestamp do servidor
    //@Column(columnDefinition = "timestamp with time zone Default timezone(utc::text,CURRENT_TIMESTAMP(0))")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;*/
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TelefoneModel> telefones = new ArrayList<TelefoneModel>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuarios_role", uniqueConstraints = @UniqueConstraint(
             columnNames = {"usuario_id","role_id"},name = "unique_role_usuario"), joinColumns = @JoinColumn(
                     name = "usuario_id", referencedColumnName = "id", table = "usuario", foreignKey = @ForeignKey(
                             name = "usuario_fk", value = ConstraintMode.CONSTRAINT)),
-                        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "role"
-                                , updatable = false, foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
+                        inverseJoinColumns = @JoinColumn(name = "role_id",
+                                referencedColumnName = "id", table = "role"
+                                , updatable = false,
+                                foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
     private List<Role> roles; ///papeis com o acesso do usuario
 
     public List<TelefoneModel> getTelefones() {
@@ -60,7 +62,7 @@ public class UsuarioModel implements UserDetails {
         this.telefones = telefones;
     }
 
-    public OffsetDateTime getDataCadastro() {
+    /*public OffsetDateTime getDataCadastro() {
         return dataCadastro;
     }
 
@@ -75,7 +77,7 @@ public class UsuarioModel implements UserDetails {
     public void setDataAtualizacao(OffsetDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
-
+*/
     public Long getId() {
         return id;
     }

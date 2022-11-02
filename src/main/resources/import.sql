@@ -7,12 +7,18 @@ INSERT INTO public.produto1(descricao, preco_unitario) VALUES ('Laranja', '4.3')
 --INSERT INTO public.usuario(login, nome, senha) VALUES ('br', 'Bruno Soares', '101020');
 --INSERT INTO public.usuario(login, nome, senha) VALUES ('lele', 'Leticia Abravanel', '201020');
 
-INSERT INTO public.usuario(data_atualizacao, data_cadastro, login, nome, senha) VALUES (timezone('utc',CURRENT_TIMESTAMP(0)), timezone('utc',CURRENT_TIMESTAMP(0)), 'md', 'Murilo Dircksen', '102030');
-INSERT INTO public.usuario(data_atualizacao, data_cadastro, login, nome, senha) VALUES (timezone('utc',CURRENT_TIMESTAMP(0)), timezone('utc',CURRENT_TIMESTAMP(0)), 'br', 'Bruno Soares', '101020');
-INSERT INTO public.usuario(data_atualizacao, data_cadastro, login, nome, senha) VALUES (timezone('utc',CURRENT_TIMESTAMP(0)), timezone('utc',CURRENT_TIMESTAMP(0)), 'lele', 'Leticia Abravanel', '201020');
+INSERT INTO public.usuario(login, nome, senha) VALUES ('md', 'Murilo Dircksen', '$2a$10$8okjbHGqFzdFAX.XtVBO6eEZWi4F7W285Yy6ZsQC9ZyecUB.gO91C'); --senha codificada 102030
+INSERT INTO public.usuario(login, nome, senha) VALUES ('br', 'Bruno Soares', '$2a$10$umA2cp3zGaSMPAGreI3PKePL9eZaDcravDUIONL./dbk1g.LQS7hW'); --203040
+
 
 INSERT INTO public.telefone(numero, tipo, id_usuario)	VALUES ('1111111111', 'cel', 1);
 INSERT INTO public.telefone(numero, tipo, id_usuario)	VALUES ('2222222222', 'cel', 2);
+
+INSERT INTO public.role(nome_role) VALUES ('ROLE_ADMIN');
+INSERT INTO public.role(nome_role) VALUES ('ROLE_CAIXA');
+INSERT INTO public.usuarios_role(usuario_id, role_id) VALUES (1, 1);
+INSERT INTO public.usuarios_role(usuario_id, role_id) VALUES (2, 2);
+
 
 --Projeto semana 4
 

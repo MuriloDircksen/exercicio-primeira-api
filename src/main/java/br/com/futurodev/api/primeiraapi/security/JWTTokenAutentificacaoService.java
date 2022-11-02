@@ -23,7 +23,7 @@ public class JWTTokenAutentificacaoService {
     private static final long EXPIRATION_TIME = 24*60*60*2;//2 dias em milissegundo
 
     /*uma senha unica para compor a autenticação e ajudar na segurança*/
-    private static final String SECRET = "sadhsaudh  123ijJHDSAip%$#haf%4j23jne3e";//senha aleatória extremamente forte para compor as senhas
+    private static final String SECRET = "sadhsaudh123ijJHDSAip%$#haf%4j23jne3e";//senha aleatória extremamente forte para compor as senhas
 
     /*prefixo padrão do token*/
     private static final String TOKEN_PREFIX = "Bearer";
@@ -40,13 +40,13 @@ public class JWTTokenAutentificacaoService {
                 .setExpiration(new Date(System.currentTimeMillis()+EXPIRATION_TIME))//definimos tempo de expiração do token para 2 dias após criação
                 .signWith(SignatureAlgorithm.HS512, SECRET).compact(); //compactando e usando o algoritmo de criptografia
 
-        String Token = TOKEN_PREFIX + " " + JWT; //construção do token
+        String token = TOKEN_PREFIX + "  " + JWT; //construção do token
 
         /*adiciona no cabeçalho http */
-        response.addHeader(HEADER_STRING, Token);
+        response.addHeader(HEADER_STRING, token);
 
         /*Escrever o token como resposta no corpo Http*/
-        response.getWriter().write("{\"Authorization\": \""+ Token+ "\"}");
+        response.getWriter().write("{\"Authorization\": \""+token+"\"}");
     }
 
     /*Retorna o usuario validado com token ou caso seja invalido, retorna null*/
@@ -56,7 +56,7 @@ public class JWTTokenAutentificacaoService {
 
         if(token!=null){
             String user = Jwts.parser().setSigningKey(SECRET) //retorna a senha secreta
-                    .parseClaimsJwt(token.replace(TOKEN_PREFIX, "")) //tira o bearer da senha
+                    .parseClaimsJws(token.replace(TOKEN_PREFIX, "")) //tira o bearer da senha
                     .getBody().getSubject(); //recebe/captura o usuario
             if(user != null){
                 UsuarioModel usuario = ApplicationContextLoad.getApplicationContext()

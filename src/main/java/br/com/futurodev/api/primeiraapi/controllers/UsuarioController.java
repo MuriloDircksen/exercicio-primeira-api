@@ -8,6 +8,8 @@ import br.com.futurodev.api.primeiraapi.model.TelefoneModel;
 import br.com.futurodev.api.primeiraapi.model.UsuarioModel;
 import br.com.futurodev.api.primeiraapi.repository.UsuarioRepository;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +27,10 @@ import java.util.stream.Collectors;
 
 @Api(tags = "Usuarios")
 @RestController
-@RequestMapping(value = "/usuario")
+@RequestMapping(value = "/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+
     @Autowired
     private CadastroUsuarioService cadastroUsuarioService;
 
@@ -51,9 +53,10 @@ public class UsuarioController {
 
     //a entrada continua sendo um usuario model, porém a saida e uma DTO -UsuarioRepresentationModel
 
+    @ApiOperation("Cadastro")
     @PostMapping(value = "/", produces = "application/json")
-    @Transactional
-    public ResponseEntity<UsuarioRepresentationModel> cadastrar(@RequestBody UsuarioInput usuarioInput) {
+
+    public ResponseEntity<UsuarioRepresentationModel> cadastrar(@RequestBody @Valid UsuarioInput usuarioInput) {
        //converte um usuario input em usuario model, interessante quando o metodo não
         // irá necessitar salvar dados
         UsuarioModel usu = cadastroUsuarioService.salvar(toDomainObject(usuarioInput));
@@ -79,8 +82,9 @@ public class UsuarioController {
         return new ResponseEntity<UsuarioRepresentationModel>(toModel(usu), HttpStatus.OK);
     }implementação DTO*/
 
+    @ApiOperation("Atualizar")
     @PutMapping(value = "/", produces = "application/json")
-    @Transactional
+
     public ResponseEntity<UsuarioRepresentationModel> atualizar(@RequestBody UsuarioInput usuarioInput) {
         UsuarioModel usu = cadastroUsuarioService.salvar(toDomainObject(usuarioInput));
 
@@ -95,10 +99,11 @@ public class UsuarioController {
          return new ResponseEntity<String>("Usuario deletado!", HttpStatus.OK);
     }primeira alteração, inclusão do service*/
 
+    @ApiOperation("Deletar")
     @DeleteMapping(value = "/")
     @ResponseBody
-    @Transactional
-    public ResponseEntity<String> delete(@RequestParam Long idUsuario){
+
+    public ResponseEntity<String> delete(@ApiParam(value = "ID Usuario", example ="1") @RequestParam Long idUsuario){
         cadastroUsuarioService.deletar(idUsuario);
         //não retorna um usuario model, não precisamos refatorar para usuariorepresentationmodel
         return new ResponseEntity<String>("Usuario deletado!", HttpStatus.OK);
@@ -118,9 +123,9 @@ public class UsuarioController {
 
         return new ResponseEntity<UsuarioModel>(usu, HttpStatus.OK);
     }segunda alteração, inserção do DTO*/
-
+    @ApiOperation("Buscar por ID")
     @GetMapping(value = "/{idUsuario}", produces = "application/json")
-    @Transactional
+
     public ResponseEntity<UsuarioRepresentationModel> getUserById(@PathVariable(value = "idUsuario") Long idUsuario){
 
         UsuarioModel usu = cadastroUsuarioService.getUserById(idUsuario);
@@ -140,10 +145,11 @@ public class UsuarioController {
 
         return new ResponseEntity<List<UsuarioModel>>(usuarios, HttpStatus.OK);
     }inclusão service*/
+    @ApiOperation("Buscar por nome")
     @GetMapping(value = "/buscarpornome", produces = "application/json")
     @ResponseBody
-    @Transactional
-    public ResponseEntity<List<UsuarioRepresentationModel>> getByUserName(String nome){
+
+    public ResponseEntity<List<UsuarioRepresentationModel>> getByUserName(@RequestParam(name = "nome") String nome){
         //obtem a lista de usuarios do tipo model
         List<UsuarioModel> usuarios = cadastroUsuarioService.getUserByName(nome);
 
@@ -151,6 +157,18 @@ public class UsuarioController {
         List<UsuarioRepresentationModel> usuariosRepresentationModel=toColletionModel(usuarios);
         return new ResponseEntity<List<UsuarioRepresentationModel>>
                 (usuariosRepresentationModel, HttpStatus.OK);
+    }
+
+    @ApiOperation("Listar usuários")
+    @GetMapping(value = "", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<List<UsuarioRepresentationModel>> getUsers(){
+        // obtem a lista de usuario do tipo Model, nossas entidades
+        List<UsuarioModel> usuarios = cadastroUsuarioService.getUsers();
+
+        // nos convertemos o objeto do tipo UsuarioModel para RepresentationModel (DTO)
+        List<UsuarioRepresentationModel> usuariosRepresentationModel = toColletionModel(usuarios);
+        return new ResponseEntity<List<UsuarioRepresentationModel>>(usuariosRepresentationModel,HttpStatus.OK);
     }
 
     //metodo conversão objeto usuario model em usuariorepresentationmodel
@@ -161,8 +179,8 @@ public class UsuarioController {
         usuarioRepresentationModel.setNome(usu.getNome());
         usuarioRepresentationModel.setLogin(usu.getLogin());
         usuarioRepresentationModel.setSenha(usu.getSenha());
-        usuarioRepresentationModel.setDataCadastro(usu.getDataCadastro());
-        usuarioRepresentationModel.setDataAtualizacao(usu.getDataAtualizacao());
+       // usuarioRepresentationModel.setDataCadastro(usu.getDataCadastro());
+        //usuarioRepresentationModel.setDataAtualizacao(usu.getDataAtualizacao());
 
         for(int i=0; i<usu.getTelefones().size();i++) {
             TelefoneRepresetationModel telefoneRepresetationModel = new TelefoneRepresetationModel();

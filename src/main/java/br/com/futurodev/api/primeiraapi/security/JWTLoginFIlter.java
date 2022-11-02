@@ -41,7 +41,7 @@ public class JWTLoginFIlter extends AbstractAuthenticationProcessingFilter {
 
         //retorna o usuario login, senha e acessos
         return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
-                user.getLogin(), user.getPassword()));
+                user.getLogin(), user.getSenha()));
     }
 
     @Override

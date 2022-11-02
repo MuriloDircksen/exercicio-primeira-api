@@ -113,9 +113,15 @@
     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-api</artifactId>
-      <version>0.11.5</version>
+      <artifactId>jjwt</artifactId>
+      <version>0.7.0</version>
     </dependency>
+
+   <!-- <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>-->
 
 
 

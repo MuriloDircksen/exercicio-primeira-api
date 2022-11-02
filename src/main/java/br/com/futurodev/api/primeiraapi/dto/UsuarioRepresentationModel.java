@@ -13,10 +13,10 @@ public class UsuarioRepresentationModel {
     private String nome;
     private String login;
     private String senha;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+   /* @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime dataCadastro;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;*/
 
 
     private List<TelefoneRepresetationModel> telefones= new ArrayList<>();
@@ -29,7 +29,7 @@ public class UsuarioRepresentationModel {
         this.telefones = telefones;
     }
 
-    public OffsetDateTime getDataCadastro() {
+    /*public OffsetDateTime getDataCadastro() {
         return dataCadastro;
     }
 
@@ -44,7 +44,7 @@ public class UsuarioRepresentationModel {
     public void setDataAtualizacao(OffsetDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
-
+*/
     public Long getId() {
         return id;
     }
